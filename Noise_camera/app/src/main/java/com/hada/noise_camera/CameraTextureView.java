@@ -199,7 +199,7 @@ public class  CameraTextureView extends Thread {
             mainActivity.getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
             int px = outMetrics.densityDpi;
             Log.e(TAG, "onSurfaceTextureAvailable, width=" + width + ", height=" + height + ", density=" + px);
-            openCamera();
+//            openCamera();
 
         }
 
@@ -229,7 +229,16 @@ public class  CameraTextureView extends Thread {
             // TODO Auto-generated method stub
             Log.e(TAG, "onOpened");
             mCameraDevice = camera;
-            startPreview();
+            new Handler().postDelayed(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    //딜레이 후 시작할 코드 작성
+                    startPreview();
+                }
+            }, 600);
+
 
         }
 
@@ -268,6 +277,7 @@ public class  CameraTextureView extends Thread {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
         mPreviewBuilder.addTarget(surface);
 
         try {
@@ -495,7 +505,7 @@ public class  CameraTextureView extends Thread {
                 public void onCaptureCompleted(CameraCaptureSession session,
                                                CaptureRequest request, TotalCaptureResult result) {
                     super.onCaptureCompleted(session, request, result);
-                    Toast.makeText(mContext, "Saved:" + file, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(mContext, "Saved:" + file, Toast.LENGTH_SHORT).show();
                     delayPreview.postDelayed(mDelayPreviewRunnable, 1000);
 //                    startPreview();
                 }
@@ -568,7 +578,7 @@ public class  CameraTextureView extends Thread {
     public void onResume() {
         Log.d(TAG, "onResume");
         setSurfaceTextureListener();
-        openCamera();
+//        openCamera();
 
     }
 

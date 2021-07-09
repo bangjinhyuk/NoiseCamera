@@ -12,7 +12,7 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:background="@drawable/gallery_x_button"
-        android:scaleType="centerCrop"
+        android:scaleType="center"
         android:onClick="onClickBackButton"
         app:layout_constraintBottom_toTopOf="@+id/recyclerView"
         app:layout_constraintStart_toStartOf="parent"

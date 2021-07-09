@@ -1,4 +1,4 @@
-    package com.hada.noise_camera;
+package com.hada.noise_camera;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -20,6 +20,8 @@ import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.net.URL;
@@ -46,7 +48,7 @@ public class GalleryView extends AppCompatActivity {
         ImageButton mXButton = (ImageButton) findViewById(R.id.gallery_x_button);
 
         ConstraintLayout.LayoutParams mLayoutParams = (ConstraintLayout.LayoutParams) mRecyclerView.getLayoutParams();
-        mLayoutParams.topMargin = height * 5 /100;
+        mLayoutParams.topMargin = height * 6 /100;
         mRecyclerView.setLayoutParams(mLayoutParams);
 
         ConstraintLayout.LayoutParams cl = (ConstraintLayout.LayoutParams) mXButton.getLayoutParams();
@@ -54,11 +56,10 @@ public class GalleryView extends AppCompatActivity {
         mXButton.setLayoutParams(cl);
 
         mRecyclerView.getLayoutParams().height = height * 95/100;
-        mRencently.getLayoutParams().width = width * 15/100;
-        mRencently.getLayoutParams().height = width * 3/100;
-        mXButton.getLayoutParams().height = width * 4/100;
-        mXButton.getLayoutParams().width = width * 4/100;
-
+        mRencently.getLayoutParams().width = width * 16/100;
+        mRencently.getLayoutParams().height = width * 4/100;
+        mXButton.getLayoutParams().height = width * 5/100;
+        mXButton.getLayoutParams().width = width * 5/100;
 
         GridLayoutManager mGridLayoutManager = new GridLayoutManager(this,3);
         RecyclerView.ItemDecoration dividerItemDecoration =
@@ -67,13 +68,14 @@ public class GalleryView extends AppCompatActivity {
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
 
-        mAdapter = new CustomAdapter(this,urls);
+        mAdapter = new CustomAdapter(this,urls, Glide.with(getApplicationContext()),width);
         mAdapter.setOnItemClickListener(new CustomAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
                 Intent intent = new Intent(getApplicationContext(), SelectGalleryView.class);
                 intent.putExtra("position",position);
                 startActivity(intent);
+                finish();
             }
         });
         mRecyclerView.setAdapter(mAdapter);
@@ -103,14 +105,16 @@ public class GalleryView extends AppCompatActivity {
     }
 
     public void onClickBackButton(View view) {
-        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(),CameraActivity.class);
         startActivity(intent);
+        finish();
     }
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(),CameraActivity.class);
         startActivity(intent);
+        finish();
 
     }
 }

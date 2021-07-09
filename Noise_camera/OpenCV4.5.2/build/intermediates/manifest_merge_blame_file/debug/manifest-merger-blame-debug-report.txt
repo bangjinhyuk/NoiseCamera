@@ -6,8 +6,8 @@
 6
 7    <uses-sdk
 8        android:minSdkVersion="24"
-8-->C:\Users\ksk98\Documents\GitHub\NoiseCamera\Noise_camera\OpenCV4.5.2\java\AndroidManifest.xml
+8-->/Users/bangjinhyuk/Documents/개발/Git/NoiseCamera/Noise_camera/OpenCV4.5.2/java/AndroidManifest.xml
 9        android:targetSdkVersion="30" />
-9-->C:\Users\ksk98\Documents\GitHub\NoiseCamera\Noise_camera\OpenCV4.5.2\java\AndroidManifest.xml
+9-->/Users/bangjinhyuk/Documents/개발/Git/NoiseCamera/Noise_camera/OpenCV4.5.2/java/AndroidManifest.xml
 10
 11</manifest>

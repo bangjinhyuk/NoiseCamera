@@ -69,8 +69,8 @@ public class SelectGalleryView extends AppCompatActivity {
         bigWord = (ImageView)findViewById(R.id.big_word);
 
         ConstraintLayout.LayoutParams mLayoutParams = (ConstraintLayout.LayoutParams) linearLayout.getLayoutParams();
-        mLayoutParams.topMargin = height * 5 /100;
-        mLayoutParams.bottomMargin = height * 15/100;
+        mLayoutParams.topMargin = height * 6 /100;
+        mLayoutParams.bottomMargin = height * 14/100;
         linearLayout.setLayoutParams(mLayoutParams);
 
         ConstraintLayout.LayoutParams cl = (ConstraintLayout.LayoutParams) returnButton.getLayoutParams();
@@ -81,13 +81,13 @@ public class SelectGalleryView extends AppCompatActivity {
         cl2.rightMargin = width * 4 / 100;
         cancleButton.setLayoutParams(cl2);
 
-        returnButton.getLayoutParams().height = height * 2/100;
-        returnButton.getLayoutParams().width = width * 2/100;
-        cancleButton.getLayoutParams().height = (int)(height * 2.5/100);
-        cancleButton.getLayoutParams().width = (int) (width * 4.5/100);
+        returnButton.getLayoutParams().height = height * 3/100;
+        returnButton.getLayoutParams().width = width * 3/100;
+        cancleButton.getLayoutParams().height = (int)(height * 3/100);
+        cancleButton.getLayoutParams().width = (int) (width * 5/100);
         bigWord.getLayoutParams().height = height * 3/100;
         bigWord.getLayoutParams().width = width * 30/100;
-        textView.getLayoutParams().height = height * 3/100;
+        textView.getLayoutParams().height = height * 4/100;
         textView.getLayoutParams().width = width * 25/100;
         textView.setText((currentPosition+1)+"/"+urls.size());
 
@@ -98,6 +98,7 @@ public class SelectGalleryView extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),GalleryView.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -175,6 +176,7 @@ public class SelectGalleryView extends AppCompatActivity {
     public void onBackPressed() {
         Intent intent = new Intent(getApplicationContext(),GalleryView.class);
         startActivity(intent);
+        finish();
 
     }
 }

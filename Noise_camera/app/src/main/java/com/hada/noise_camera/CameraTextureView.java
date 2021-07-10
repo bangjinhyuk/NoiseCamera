@@ -461,6 +461,8 @@ public class  CameraTextureView extends Thread {
 //                        });
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         mbmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+//                        noisebmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+
                         byte[] bytes1 = stream.toByteArray();
                         save(bytes1);
                         //                        save(bytes);

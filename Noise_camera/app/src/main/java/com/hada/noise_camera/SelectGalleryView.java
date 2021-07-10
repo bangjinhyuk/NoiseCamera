@@ -125,6 +125,7 @@ public class SelectGalleryView extends AppCompatActivity {
                 currentImage = (ImageView)findViewById(R.id.currentImage);
                 currentImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 Glide.with(getApplicationContext()).load(urls.get(currentPosition)).into(currentImage);
+                textView.setText((currentPosition+1)+"/"+urls.size());
             }
         });
     }
@@ -168,6 +169,7 @@ public class SelectGalleryView extends AppCompatActivity {
                 currentImage = (ImageView)findViewById(R.id.currentImage);
                 currentImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 Glide.with(this).load(urls.get(currentPosition)).into(currentImage);
+                textView.setText((currentPosition+1)+"/"+urls.size());
             }
         }
     }

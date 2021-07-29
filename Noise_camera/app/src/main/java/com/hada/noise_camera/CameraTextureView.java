@@ -448,7 +448,7 @@ public class  CameraTextureView extends Thread {
                         Core.meanStdDev(matInput,mean,dev);
 
 //                        Core.randn(noise,mean.get(0,0)[0], dev.get(0,0)[0]);
-                        Core.randn(noise,0.0, 50.0);
+                        Core.randn(noise,0.0, 70.0);
 
                         Core.add(matInput, noise, matInput);
 

@@ -18,15 +18,17 @@
         android:roundIcon="@mipmap/ic_main2_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Noise_camera">
-        <activity android:name=".CameraActivity"></activity>
-        <activity android:name=".SelectGalleryView" />
-        <activity android:name=".GalleryView" />
+        <activity android:name=".CameraActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".SelectGalleryView" android:screenOrientation="portrait"/>
+        <activity android:name=".GalleryView" android:screenOrientation="portrait"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            android:screenOrientation="portrait"
         </activity>
 
         <provider

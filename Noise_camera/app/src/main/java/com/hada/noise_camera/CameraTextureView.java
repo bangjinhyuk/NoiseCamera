@@ -244,7 +244,7 @@ public class  CameraTextureView extends Thread {
                     //딜레이 후 시작할 코드 작성
                     startPreview();
                 }
-            }, 600);
+            }, 500);
 
 
         }
@@ -363,7 +363,7 @@ public class  CameraTextureView extends Thread {
                 height = jpegSizes[0].getHeight();
             }
 
-            ImageReader reader = ImageReader.newInstance(2560, 1920, ImageFormat.JPEG, 1);
+            ImageReader reader = ImageReader.newInstance(1920, 1440, ImageFormat.JPEG, 1);
 //            ImageReader reader = ImageReader.newInstance(width, height, ImageFormat.RAW_SENSOR, 1);
             List<Surface> outputSurfaces = new ArrayList<Surface>(2);
             outputSurfaces.add(reader.getSurface());
@@ -432,55 +432,21 @@ public class  CameraTextureView extends Thread {
 //                        Bitmap resized_bmp =  resizeBitmap(bmp,mTextureView.getHeight(),mTextureView.getWidth());
 //                        imageView.setImageBitmap(bmp);
                         matInput = new Mat();
-//
-
-                        Utils.bitmapToMat(bmp, matInput);
-
-//
-
-                        Mat noise = new Mat(matInput.size(), matInput.type());
-//                        Log.d("data.lengthSize", bytes.length+""+matInput.type());
-//                        Log.d("Bitmap.lengthSize", bmp.getWidth()+""+bmp.getHeight());
-//                        Log.d("matInputSize", matInput.size()+"");
-
-                        MatOfDouble mean = new MatOfDouble ();
-                        MatOfDouble dev = new MatOfDouble ();
-                        Core.meanStdDev(matInput,mean,dev);
-
-//                        Core.randn(noise,mean.get(0,0)[0], dev.get(0,0)[0]);
-                        Core.randn(noise,0.0, 70.0);
-
-                        Core.add(matInput, noise, matInput);
-
-                        Utils.matToBitmap(matInput,bmp);
-                        Core.rotate(matInput,matInput,Core.ROTATE_90_CLOCKWISE);
-
-
-                        // 이미지 중심으로 90도 회전 Matrix
                         Matrix matrix = new Matrix();
                         matrix.preRotate(90, 0, 0);
-                        // 이미지 회전
-                        Bitmap mbmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, false);
-                        Utils.matToBitmap(matInput,mbmp);
+                        Bitmap rbmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, false);
+                        Log.d("width", "onCreate-bmp: "+ bmp.getWidth()+","+ bmp.getHeight());
+                        Log.d("width", "onCreate-rbmp: "+ rbmp.getWidth()+","+ rbmp.getHeight());
+
+                        Utils.bitmapToMat(rbmp , matInput);
 
 
-                        Core.rotate(noise,noise,Core.ROTATE_90_CLOCKWISE);
+                        Core.add(matInput,((CameraActivity)CameraActivity.mContext).getNoise_img(), matInput);
 
+                        Utils.matToBitmap(matInput,rbmp);
 
-
-                        Bitmap noisebmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, false);
-                        Utils.matToBitmap(noise,noisebmp);
-
-//                        mainActivity.runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                Log.d("please", "run");
-////                                imageView.setImageBitmap(bmp);
-//                                noise_img.setImageBitmap(noisebmp);
-//                            }
-//                        });
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        mbmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                        rbmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
 //                        noisebmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
 
                         byte[] bytes1 = stream.toByteArray();
@@ -530,7 +496,7 @@ public class  CameraTextureView extends Thread {
                                                CaptureRequest request, TotalCaptureResult result) {
                     super.onCaptureCompleted(session, request, result);
 //                    Toast.makeText(mContext, "Saved:" + file, Toast.LENGTH_SHORT).show();
-                    delayPreview.postDelayed(mDelayPreviewRunnable, 1000);
+                    delayPreview.postDelayed(mDelayPreviewRunnable, 600);
 //                    startPreview();
                 }
 

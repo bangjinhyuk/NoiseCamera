@@ -26,8 +26,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.lakue.lakuepopupactivity.PopupActivity;
+import com.lakue.lakuepopupactivity.PopupGravity;
+import com.lakue.lakuepopupactivity.PopupResult;
+import com.lakue.lakuepopupactivity.PopupType;
 
 import java.io.File;
 import java.net.URI;
@@ -103,32 +108,46 @@ public class SelectGalleryView extends AppCompatActivity {
             }
         });
 
+//        cancleButton.setOnClickListener(new View.OnClickListener() {
+//            @RequiresApi(api = Build.VERSION_CODES.O)
+//            @Override
+//            public void onClick(View v) {
+//                try {
+//                    Uri contentUri = Uri.withAppendedPath(
+//                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+//                            ids.get(currentPosition).toString()
+//                    );
+//                    ContentResolver contentResolver = getContentResolver();
+//                    contentResolver.delete(contentUri,null,null);
+//                } catch (RecoverableSecurityException e) {
+//                    IntentSender intentSender = e.getUserAction().getActionIntent().getIntentSender();
+//                    try {
+//                        startIntentSenderForResult(intentSender, DELETE_PERMISSION_REQUEST,null,0,0,0,null);
+//                    } catch (IntentSender.SendIntentException sendIntentException) {
+//                        sendIntentException.printStackTrace();
+//                    }
+//                }
+//                getAllPhotos();
+//                currentImage = (ImageView)findViewById(R.id.currentImage);
+//                currentImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+//                Glide.with(getApplicationContext()).load(urls.get(currentPosition)).into(currentImage);
+//                textView.setText((currentPosition+1)+"/"+urls.size());
+//            }
+//        });
         cancleButton.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                try {
-                    Uri contentUri = Uri.withAppendedPath(
-                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                            ids.get(currentPosition).toString()
-                    );
-                    ContentResolver contentResolver = getContentResolver();
-                    contentResolver.delete(contentUri,null,null);
-                } catch (RecoverableSecurityException e) {
-                    IntentSender intentSender = e.getUserAction().getActionIntent().getIntentSender();
-                    try {
-                        startIntentSenderForResult(intentSender, DELETE_PERMISSION_REQUEST,null,0,0,0,null);
-                    } catch (IntentSender.SendIntentException sendIntentException) {
-                        sendIntentException.printStackTrace();
-                    }
-                }
-                getAllPhotos();
-                currentImage = (ImageView)findViewById(R.id.currentImage);
-                currentImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                Glide.with(getApplicationContext()).load(urls.get(currentPosition)).into(currentImage);
-                textView.setText((currentPosition+1)+"/"+urls.size());
+                Intent intent = new Intent(getBaseContext(), PopupActivity.class);
+                intent.putExtra("type", PopupType.SELECT);
+                intent.putExtra("gravity", PopupGravity.CENTER);
+                intent.putExtra("title", "사진 삭제");
+                intent.putExtra("content", "사진을 삭제하시겠습니까?");
+                intent.putExtra("buttonLeft", "예");
+                intent.putExtra("buttonRight", "아니오");
+                startActivityForResult(intent, 777);
             }
         });
+
     }
 
     private void getAllPhotos() {
@@ -154,6 +173,7 @@ public class SelectGalleryView extends AppCompatActivity {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -171,6 +191,31 @@ public class SelectGalleryView extends AppCompatActivity {
                 currentImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 Glide.with(this).load(urls.get(currentPosition)).into(currentImage);
                 textView.setText((currentPosition+1)+"/"+urls.size());
+            }
+        }
+        else if (requestCode == 777){
+            PopupResult result = (PopupResult) data.getSerializableExtra("result");
+            if(result == PopupResult.LEFT) {
+                try {
+                    Uri contentUri = Uri.withAppendedPath(
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                            ids.get(currentPosition).toString()
+                    );
+                    ContentResolver contentResolver = getContentResolver();
+                    contentResolver.delete(contentUri, null, null);
+                } catch (RecoverableSecurityException e) {
+                    IntentSender intentSender = e.getUserAction().getActionIntent().getIntentSender();
+                    try {
+                        startIntentSenderForResult(intentSender, DELETE_PERMISSION_REQUEST, null, 0, 0, 0, null);
+                    } catch (IntentSender.SendIntentException sendIntentException) {
+                        sendIntentException.printStackTrace();
+                    }
+                }
+                getAllPhotos();
+                currentImage = (ImageView) findViewById(R.id.currentImage);
+                currentImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                Glide.with(getApplicationContext()).load(urls.get(currentPosition)).into(currentImage);
+                textView.setText((currentPosition + 1) + "/" + urls.size());
             }
         }
     }

@@ -3,6 +3,7 @@ package com.hada.noise_camera;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 
 import android.database.Cursor;
@@ -45,8 +46,9 @@ public class CameraActivity extends AppCompatActivity {
     private int width,height;
     private long backKeyPressedTime = 0;
     private Toast toast;
-
+    private Mat noise_img;
     private static final String TAG = "CAMERAACTIVITY";
+    public static Context mContext;
 
     static final int REQUEST_CAMERA = 1;
 
@@ -91,25 +93,34 @@ public class CameraActivity extends AppCompatActivity {
         //초반 앱을 켤때에 노이즈 필터 적용
         OpenCVLoader.initDebug();
         Bitmap bmp5120 = BitmapFactory.decodeResource(this.getResources(), R.drawable.img_2560);
-        Log.d("width", "onCreate: "+ bmp5120.getWidth()+","+ bmp5120.getHeight());
+        Log.d("width", "onCreate-bmp5120: "+ bmp5120.getWidth()+","+ bmp5120.getHeight());
 
-        Bitmap resized = Bitmap.createScaledBitmap(bmp5120,width, width*4/3, true);
+        Bitmap resized = Bitmap.createScaledBitmap(bmp5120,1440, 1920, true);
         matInput = new Mat();
         Utils.bitmapToMat(resized, matInput);
         Mat noise = new Mat(matInput.size(), matInput.type());
+        Mat noise_1 = new Mat(matInput.size(), matInput.type());
 
 
         MatOfDouble mean = new MatOfDouble ();
         MatOfDouble dev = new MatOfDouble ();
         Core.meanStdDev(matInput,mean,dev);
-        Core.randn(noise,0.0, 35.0);
+        Core.randn(noise,0.0, 45.0);
+        Core.randn(noise_1,0.0, 70.0);
         Matrix matrix = new Matrix();
         Bitmap noisebmp = Bitmap.createBitmap(resized, 0, 0, resized.getWidth(), resized.getHeight(), matrix, false);
         Utils.matToBitmap(noise,noisebmp);
         noiseimg.setImageBitmap(noisebmp);
+        Log.d("width", "onCreate-noisebmp: "+ noisebmp.getWidth()+","+ noisebmp.getHeight());
         bmp5120.recycle();
+        this.noise_img = noise_1;
         setRecentImageView();
+        mContext = this;
 
+    }
+
+    public Mat getNoise_img(){
+        return this.noise_img;
     }
 
     public void setRecentImageView(){

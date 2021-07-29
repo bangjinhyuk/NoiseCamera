@@ -2,7 +2,10 @@ package com.hada.noise_camera;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.database.Cursor;
@@ -24,11 +27,14 @@ import android.hardware.camera2.params.SessionConfiguration;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 
 import android.os.Message;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -88,6 +94,7 @@ public class  CameraTextureView extends Thread {
     private Activity mainActivity;
     private int width;
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray(4);
+    private ParcelFileDescriptor pdf;
 
     static {
         ORIENTATIONS.append(Surface.ROTATION_0, 90);
@@ -373,15 +380,28 @@ public class  CameraTextureView extends Thread {
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
 
             Date date = new Date();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_hh_mm_ss");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_hhmmss");
 
-            final File file = new File(Environment.getExternalStorageDirectory() + "/DCIM/Camera/", "Camera" + dateFormat.format(date) + ".jpg");
+            final File file = new File(Environment.getExternalStorageDirectory() +"/DCIM/Camera/"+ dateFormat.format(date) + ".jpg");
+//            System.out.println("2222222222222"+file.getPath().toString());
+//            ContentValues values = new ContentValues();
+//            values.put(MediaStore.Images.Media.DISPLAY_NAME, "/pic_" + dateFormat.format(date) +".JPG");
+//            values.put(MediaStore.Images.Media.MIME_TYPE, "image/*");
+////            values.put(MediaStore.Images.Media.MIME_TYPE, getMIMEType(fileRoot));
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//                values.put(MediaStore.Images.Media.IS_PENDING, 1);
+//            }
+//            ContentResolver contentResolver = mContext.getContentResolver();
+//            Uri item = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+//            System.out.println("------"+item);
 
             ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
                 @Override
                 public void onImageAvailable(ImageReader reader) {
                     Image image = null;
                     try {
+//                        pdf = contentResolver.openFileDescriptor(item, "w", null);
+
                         image = reader.acquireLatestImage();
 
 //                        Bitmap bmp = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.img_1847);
@@ -419,9 +439,9 @@ public class  CameraTextureView extends Thread {
 //
 
                         Mat noise = new Mat(matInput.size(), matInput.type());
-                        Log.d("data.lengthSize", bytes.length+""+matInput.type());
-                        Log.d("Bitmap.lengthSize", bmp.getWidth()+""+bmp.getHeight());
-                        Log.d("matInputSize", matInput.size()+"");
+//                        Log.d("data.lengthSize", bytes.length+""+matInput.type());
+//                        Log.d("Bitmap.lengthSize", bmp.getWidth()+""+bmp.getHeight());
+//                        Log.d("matInputSize", matInput.size()+"");
 
                         MatOfDouble mean = new MatOfDouble ();
                         MatOfDouble dev = new MatOfDouble ();
@@ -467,6 +487,8 @@ public class  CameraTextureView extends Thread {
                         save(bytes1);
                         //                        save(bytes);
                         Log.d(TAG, "save()");
+                        mContext.sendBroadcast(new Intent( Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
+
 
                     }
                     catch (FileNotFoundException e) {

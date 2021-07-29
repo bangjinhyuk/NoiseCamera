@@ -48,18 +48,18 @@ public class GalleryView extends AppCompatActivity {
         ImageButton mXButton = (ImageButton) findViewById(R.id.gallery_x_button);
 
         ConstraintLayout.LayoutParams mLayoutParams = (ConstraintLayout.LayoutParams) mRecyclerView.getLayoutParams();
-        mLayoutParams.topMargin = height * 6 /100;
+        mLayoutParams.topMargin = height * 7 /100;
         mRecyclerView.setLayoutParams(mLayoutParams);
 
         ConstraintLayout.LayoutParams cl = (ConstraintLayout.LayoutParams) mXButton.getLayoutParams();
-        cl.leftMargin = width * 7 / 100;
+        cl.leftMargin = width * 8 / 100;
         mXButton.setLayoutParams(cl);
 
-        mRecyclerView.getLayoutParams().height = height * 95/100;
-        mRencently.getLayoutParams().width = width * 16/100;
-        mRencently.getLayoutParams().height = width * 4/100;
-        mXButton.getLayoutParams().height = width * 5/100;
-        mXButton.getLayoutParams().width = width * 5/100;
+        mRecyclerView.getLayoutParams().height = height * 90/100;
+        mRencently.getLayoutParams().width = width * 20/100;
+        mRencently.getLayoutParams().height = width * 6/100;
+        mXButton.getLayoutParams().height = width * 6/100;
+        mXButton.getLayoutParams().width = width * 6/100;
 
         GridLayoutManager mGridLayoutManager = new GridLayoutManager(this,3);
         RecyclerView.ItemDecoration dividerItemDecoration =

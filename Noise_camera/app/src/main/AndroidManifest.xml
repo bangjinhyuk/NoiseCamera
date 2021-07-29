@@ -12,10 +12,10 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_main"
+        android:icon="@mipmap/ic_main2"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
-        android:roundIcon="@mipmap/ic_main_round"
+        android:roundIcon="@mipmap/ic_main2_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Noise_camera">
         <activity android:name=".CameraActivity"></activity>

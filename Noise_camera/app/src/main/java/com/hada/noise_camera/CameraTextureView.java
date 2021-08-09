@@ -57,6 +57,7 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfDouble;
 import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -320,6 +321,7 @@ public class  CameraTextureView extends Thread {
         HandlerThread thread = new HandlerThread("CameraPreview");
         thread.start();
         Handler backgroundHandler = new Handler(thread.getLooper());
+        setRecentImageView();
 
         try {
             mPreviewSession.setRepeatingRequest(mPreviewBuilder.build(), null, backgroundHandler);
@@ -440,8 +442,17 @@ public class  CameraTextureView extends Thread {
 
                         Utils.bitmapToMat(rbmp , matInput);
 
+                        Mat matrix1 = new Mat();
 
-                        Core.add(matInput,((CameraActivity)CameraActivity.mContext).getNoise_img(), matInput);
+                        Imgproc.resize(((CameraActivity)CameraActivity.mContext).getNoise_img(),matrix1,new org.opencv.core.Size(matInput.width(),matInput.height()));
+
+                        Log.d("((CameraActivity)CameraActivity.mContext).getNoise_img()", ((CameraActivity)CameraActivity.mContext).getNoise_img().width()+""+((CameraActivity)CameraActivity.mContext).getNoise_img().height());
+
+                        Log.d("matInput", matInput.width()+""+matInput.height());
+                        Log.d("matrix1", matrix1.width()+""+matrix1.height());
+
+
+                        Core.add(matInput,matrix1, matInput);
 
                         Utils.matToBitmap(matInput,rbmp);
 
@@ -468,6 +479,7 @@ public class  CameraTextureView extends Thread {
                             reader.close();
                         }
                     }
+                    setRecentImageView();
                 }
 
                 private void save(byte[] bytes) throws IOException {
@@ -476,6 +488,7 @@ public class  CameraTextureView extends Thread {
                         output = new FileOutputStream(file);
                         output.write(bytes);
                         setRecentImageView();
+                        Log.d(TAG, "save(1)");
                     } finally {
                         if (null != output) {
                             output.close();

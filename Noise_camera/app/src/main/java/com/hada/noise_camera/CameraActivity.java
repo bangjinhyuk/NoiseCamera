@@ -106,7 +106,7 @@ public class CameraActivity extends AppCompatActivity {
         MatOfDouble dev = new MatOfDouble ();
         Core.meanStdDev(matInput,mean,dev);
         Core.randn(noise,0.0, 45.0);
-        Core.randn(noise_1,0.0, 70.0);
+        Core.randn(noise_1,0.0, 65.0);
         Matrix matrix = new Matrix();
         Bitmap noisebmp = Bitmap.createBitmap(resized, 0, 0, resized.getWidth(), resized.getHeight(), matrix, false);
         Utils.matToBitmap(noise,noisebmp);
